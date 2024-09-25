@@ -1,23 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { add } from "./utils/utils"; // Import your add function
+import "./App.css";
 
 function App() {
+  const [numbers, setNumbers] = useState("");
+  const [result, setResult] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(""); // Reset error state
+
+    try {
+      const sum = add(numbers.replace(/\\n/g, "\n"));
+      setResult(`Sum is ${sum}`);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(`Error: ${err.message}`);
+      } else {
+        setError("An unknown error occurred");
+      }
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main-wrapper">
+      <h1>String Calculator</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="numbers">Enter numbers:</label>
+          <input
+            type="text"
+            id="numbers"
+            value={numbers}
+            onChange={(e) => setNumbers(e.target.value)}
+            placeholder="Enter numbers"
+            className="input-field"
+            required
+          />
+        </div>
+        <div className="form-group">
+          <button type="submit" className="submit-button">
+            Calculate
+          </button>
+        </div>
+      </form>
+      {result && <div className="result-message">{result}</div>}
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }
