@@ -7,18 +7,19 @@ function App() {
   const [result, setResult] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError(""); // Reset error state
+    setResult(""); // Reset result state
 
     try {
       const sum = add(numbers.replace(/\\n/g, "\n"));
-      setResult(`Sum is ${sum}`);
+      setResult(`✅ Sum is ${sum}`);
     } catch (err) {
       if (err instanceof Error) {
-        setError(`Error: ${err.message}`);
+        setError(`❌ Error: ${err.message}`);
       } else {
-        setError("An unknown error occurred");
+        setError("❌ An unknown error occurred");
       }
     }
   };
